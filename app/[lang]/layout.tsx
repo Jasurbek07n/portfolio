@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { LANGS, LANG_TAG, type Lang } from "@/lib/i18n";
+import { LANGS, LANG_TAG, toLang } from "@/lib/i18n";
 import { profile, ui } from "@/content/site";
 import { NO_FLASH } from "@/components/theme";
 import "../globals.css";
@@ -17,9 +17,9 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Lang }>;
+  params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
-  const { lang } = await params;
+  const lang = toLang((await params).lang);
   return {
     title: `${profile.name} — ${profile.role[lang]}`,
     description: profile.intro[lang],
@@ -40,9 +40,9 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ lang: Lang }>;
+  params: Promise<{ lang: string }>;
 }) {
-  const { lang } = await params;
+  const lang = toLang((await params).lang);
   return (
     <html lang={LANG_TAG[lang]} suppressHydrationWarning>
       <head>

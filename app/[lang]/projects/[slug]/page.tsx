@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { LANGS, type Lang } from "@/lib/i18n";
+import { LANGS, toLang } from "@/lib/i18n";
 import { bySlug, projects } from "@/content/projects";
 import { AI_STATEMENT, profile, ui } from "@/content/site";
 import { Footer, Langs } from "@/components/chrome";
@@ -18,9 +18,10 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Lang; slug: string }>;
+  params: Promise<{ lang: string; slug: string }>;
 }): Promise<Metadata> {
-  const { lang, slug } = await params;
+  const { lang: raw, slug } = await params;
+  const lang = toLang(raw);
   const p = bySlug(slug);
   if (!p) return {};
   return {
@@ -45,9 +46,10 @@ function Block({ label, children }: { label: string; children: React.ReactNode }
 export default async function ProjectPage({
   params,
 }: {
-  params: Promise<{ lang: Lang; slug: string }>;
+  params: Promise<{ lang: string; slug: string }>;
 }) {
-  const { lang, slug } = await params;
+  const { lang: raw, slug } = await params;
+  const lang = toLang(raw);
   const p = bySlug(slug);
   if (!p) notFound();
 

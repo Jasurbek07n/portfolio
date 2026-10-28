@@ -31,3 +31,15 @@ export const LANG_TAG: Record<Lang, string> = {
 export function isLang(v: string): v is Lang {
   return (LANGS as readonly string[]).includes(v);
 }
+
+/**
+ * Narrow a route param to a Lang.
+ *
+ * Next's generated route types hand `params` over as `{ lang: string }`, so
+ * the union has to be re-established here rather than asserted in the page
+ * signature. `dynamicParams = false` means only the three generated values
+ * ever reach this, and the default is a total fallback rather than a throw.
+ */
+export function toLang(v: string): Lang {
+  return isLang(v) ? v : DEFAULT_LANG;
+}

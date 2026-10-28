@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Lang } from "@/lib/i18n";
+import { toLang } from "@/lib/i18n";
 import { projects } from "@/content/projects";
 import { contact, profile, siteStack, ui } from "@/content/site";
 import {
@@ -36,8 +36,8 @@ function contactRows() {
   ].filter((r) => r.href);
 }
 
-export default async function Home({ params }: { params: Promise<{ lang: Lang }> }) {
-  const { lang } = await params;
+export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
+  const lang = toLang((await params).lang);
   const rows = contactRows();
 
   const nav = [
