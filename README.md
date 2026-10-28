@@ -20,8 +20,18 @@ npm run lint
 
 ## Deploying
 
-**Drag the `out/` folder onto Netlify.** That is the whole deploy — there is
-nothing to configure, no build command to set, no environment variable.
+**Vercel (the live site).** The repo is connected to a Vercel project, so every
+push to `main` builds and deploys automatically. Nothing to configure: Vercel
+detects Next.js, runs `npm run build`, and serves `out/`. There are no
+environment variables.
+
+`vercel.json` holds one rule — a redirect from `/` to `/uz/` — because
+`output: "export"` means a `redirects()` block in `next.config.ts` is never
+applied. `trailingSlash` deliberately lives only in `next.config.ts`; setting
+it in both places is a documented way to fail the build.
+
+**Netlify (or any static host).** Drag the `out/` folder on. Nothing to
+configure there either.
 
 `npm run build` also writes two things into `out/` that make the root URL
 work:
