@@ -128,9 +128,9 @@ exists to fix.
 - **Fonts are self-hosted** and subset, so there is no request to Google and
   no layout shift. Manrope ships no Cyrillic in these subsets, so Russian
   falls through to the platform UI face rather than to a serif default.
-- **`noindex`** is set in the metadata. This is a job application, not a
-  public page. Remove `robots` from `app/[lang]/layout.tsx` if that ever
-  changes.
+- **The site is indexable.** The only `noindex` left is on the root redirect
+  stub written by `scripts/postbuild.mjs`, which is a redirect rather than
+  content and should not be indexed on its own; `/` sends crawlers to `/uz/`.
 
 ---
 

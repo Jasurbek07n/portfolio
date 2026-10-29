@@ -23,8 +23,6 @@ export async function generateMetadata({
   return {
     title: `${profile.name} — ${profile.role[lang]}`,
     description: profile.intro[lang],
-    // A job application, not a public page.
-    robots: { index: false, follow: false },
   };
 }
 

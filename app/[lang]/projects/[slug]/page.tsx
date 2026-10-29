@@ -27,7 +27,6 @@ export async function generateMetadata({
   return {
     title: `${p.name} — ${profile.name}`,
     description: p.oneLine[lang],
-    robots: { index: false, follow: false },
   };
 }
 
