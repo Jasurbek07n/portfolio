@@ -254,8 +254,8 @@ p {
 .badge {
   display: grid;
   place-items: center;
-  width: 2.65rem;
-  height: 2.65rem;
+  width: 3rem;
+  height: 3rem;
   background: var(--mark);
   color: var(--mark-ink);
   border: 1.5px solid var(--line);
@@ -1348,4 +1348,39 @@ code {
 .num {
   font-size: 0.8rem;
   letter-spacing: 0.22em;
+}
+
+/* The theme toggle renders both icons and CSS picks one, so it needs no
+   state and shows the right icon on the first paint. */
+.iconbtn .i-sun {
+  display: none;
+}
+.iconbtn .i-moon {
+  display: block;
+}
+:root[data-theme="dark"] .iconbtn .i-sun {
+  display: block;
+}
+:root[data-theme="dark"] .iconbtn .i-moon {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .iconbtn .i-sun {
+    display: block;
+  }
+  :root:not([data-theme]) .iconbtn .i-moon {
+    display: none;
+  }
+}
+
+/* The nav badge is a photo rather than a monogram. */
+.badge {
+  padding: 0;
+  overflow: hidden;
+}
+.badge img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

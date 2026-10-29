@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { toLang } from "@/lib/i18n";
 import { alternates, social } from "@/lib/seo";
 import { projects } from "@/content/projects";
-import { contact, profile, siteStack, ui } from "@/content/site";
+import { contact, siteStack, ui } from "@/content/site";
 import {
   about,
   aiCoding,
@@ -73,7 +73,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <header className="nav">
         <div className="wrap nav__in">
           <Link href={`/${lang}`} className="badge" aria-label={hero.name}>
-            JN
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/jasurbek.jpg" alt={hero.name} width={640} height={640} />
           </Link>
           <nav className="nav__mid" aria-label={workTitle[lang]}>
             {nav.map((n) => (
@@ -92,12 +93,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <main id="main" tabIndex={-1}>
         {/* ---- hero ----------------------------------------------------- */}
         <section className="wrap" style={{ paddingBlock: "clamp(3.5rem,8vw,6.5rem)" }}>
-          <Reveal>
-            <p className="rule">{profile.location[lang]}</p>
-          </Reveal>
-
           <Reveal delay={80}>
-            <h1 className="display" style={{ marginTop: "2rem" }}>
+            <h1 className="display">
               Jasurbek
               <br />
               Nematov
@@ -478,9 +475,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
         <div className="wrap">
           <footer className="foot">
-            <span>
-              {hero.name} — {profile.location[lang]}
-            </span>
+            <span>{hero.name}</span>
             <span>
               {ui.builtWith[lang]}: {siteStack.join(" · ")}
             </span>

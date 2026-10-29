@@ -105,9 +105,7 @@ export function Socials() {
 export function Footer({ lang }: { lang: Lang }) {
   return (
     <footer className="foot">
-      <span>
-        {profile.name} — {profile.location[lang]}
-      </span>
+      <span>{profile.name}</span>
       <span>
         {ui.builtWith[lang]}: {siteStack.join(" · ")}
       </span>
