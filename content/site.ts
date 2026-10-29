@@ -1,5 +1,9 @@
 import type { T, TL } from "@/lib/i18n";
 
+/** The canonical origin. Everything absolute (canonicals, hreflang, the
+ *  sitemap, the link-preview image) is built from this one value. */
+export const SITE_URL = "https://jasurbeknematov.vercel.app";
+
 /* ============================================================================
    Everything on this site that is not a project lives here.
 

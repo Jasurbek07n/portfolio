@@ -1,5 +1,7 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { toLang } from "@/lib/i18n";
+import { alternates, social } from "@/lib/seo";
 import { projects } from "@/content/projects";
 import { contact, profile, siteStack, ui } from "@/content/site";
 import {
@@ -34,6 +36,22 @@ function contactRows() {
     { k: "Upwork", href: contact.upwork, v: strip(contact.upwork) },
     { k: "n8n Creator", href: contact.n8n, v: strip(contact.n8n) },
   ].filter((r) => r.href);
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const lang = toLang((await params).lang);
+  const title = `${hero.name} — ${hero.role}`;
+  const description = hero.line1[lang];
+  return {
+    title,
+    description,
+    alternates: alternates(lang, "/"),
+    ...social(lang, "/", title, description),
+  };
 }
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {

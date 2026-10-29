@@ -31,7 +31,16 @@ applied. `trailingSlash` deliberately lives only in `next.config.ts`; setting
 it in both places is a documented way to fail the build.
 
 **Netlify (or any static host).** Drag the `out/` folder on. Nothing to
-configure there either.
+configure there either — with one caveat worth knowing.
+
+Next's export writes its RSC prefetch payloads as nested directories
+(`uz/__next.$d$lang/__PAGE__.txt`) while the client requests them
+dot-flattened (`/uz/__next.$d$lang.__PAGE__.txt`). Vercel maps between the
+two; a plain file server does not, so on another host those requests 404.
+Nothing breaks — every page is prerendered HTML, so navigation just falls
+back to a normal page load — but the console is noisy and React can report a
+hydration error on first load. `lab/serve.mjs` reproduces Vercel's mapping so
+local QA matches production.
 
 `npm run build` also writes two things into `out/` that make the root URL
 work:

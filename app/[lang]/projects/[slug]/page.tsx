@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { LANGS, toLang } from "@/lib/i18n";
+import { alternates, social } from "@/lib/seo";
 import { bySlug, projects } from "@/content/projects";
 import { AI_STATEMENT, profile, ui } from "@/content/site";
 import { Footer, Langs } from "@/components/chrome";
@@ -24,9 +25,14 @@ export async function generateMetadata({
   const lang = toLang(raw);
   const p = bySlug(slug);
   if (!p) return {};
+  const title = `${p.name} — ${profile.name}`;
+  const description = p.oneLine[lang];
+  const path = `/projects/${p.slug}/`;
   return {
-    title: `${p.name} — ${profile.name}`,
-    description: p.oneLine[lang],
+    title,
+    description,
+    alternates: alternates(lang, path),
+    ...social(lang, path, title, description),
   };
 }
 

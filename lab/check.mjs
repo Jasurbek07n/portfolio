@@ -73,8 +73,19 @@ for (const mode of modes) {
     }
     const p = await ctx.newPage();
     const errs = [];
-    p.on("console", (m) => m.type() === "error" && errs.push(m.text()));
+    const bad = [];
+    // A console "Failed to load resource" carries no URL, so failed requests
+    // are tracked from the response side where the path is visible.
+    p.on("console", (m) => {
+      if (m.type() !== "error") return;
+      if (/Failed to load resource/i.test(m.text())) return;
+      errs.push(m.text());
+    });
     p.on("pageerror", (e) => errs.push(String(e)));
+    p.on("response", (r) => {
+      if (r.status() < 400) return;
+      bad.push(`${r.status()} ${r.url()}`);
+    });
 
     const resp = await p.goto(BASE + path, { waitUntil: "networkidle" });
     if (resp.status() !== 200) {
@@ -200,6 +211,10 @@ for (const mode of modes) {
     }
     if (errs.length) {
       console.log(`FAIL console ${mode.tag} ${path}`, errs.slice(0, 3));
+      fails++;
+    }
+    if (bad.length) {
+      console.log(`FAIL requests ${mode.tag} ${path}`, [...new Set(bad)].slice(0, 5));
       fails++;
     }
     if (info.ticks) {

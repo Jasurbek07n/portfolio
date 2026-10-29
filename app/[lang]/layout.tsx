@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { LANGS, LANG_TAG, toLang } from "@/lib/i18n";
-import { profile, ui } from "@/content/site";
+import { profile, SITE_URL, ui } from "@/content/site";
 import { NO_FLASH } from "@/components/theme";
 import "../globals.css";
 
@@ -21,6 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = toLang((await params).lang);
   return {
+    metadataBase: new URL(SITE_URL),
     title: `${profile.name} — ${profile.role[lang]}`,
     description: profile.intro[lang],
   };
@@ -46,10 +47,17 @@ export default async function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH }} />
         {/* Reveals start at opacity:0, so a blocked bundle would render an
-            empty page. This is the floor under the animation layer. */}
-        <noscript>
-          <style>{`.rv{opacity:1 !important;transform:none !important}`}</style>
-        </noscript>
+            empty page. This is the floor under the animation layer.
+
+            Written as raw HTML rather than a <style> child: with scripting
+            enabled the browser parses a noscript's contents as text, not as
+            elements, so a JSX child here makes the client DOM disagree with
+            the server HTML and React reports a hydration mismatch (#418). */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: "<style>.rv{opacity:1 !important;transform:none !important}</style>",
+          }}
+        />
       </head>
       <body>
         <a href="#main" className="skip">
